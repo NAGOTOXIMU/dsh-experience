@@ -54,8 +54,14 @@ winget install Microsoft.PowerShell      # 装 7.x（MSIX，per-user，免管理
 gh auth login        # 登录后，agent 能直接读仓库、搜索、建仓库、看 issue
 ```
 
-**附带好处**：`gh` 是 Go 写的、**不走 Windows 凭据存储**，
-所以即使在受限沙箱里，`gh api` 也能用（而同场景下 `git push` 会失败 —— 原因见 `02-失败模式/受限沙箱下git推送失败.md`）。
+**附带好处**：`gh` 是 Go 写的、**自带 TLS 实现**，
+所以即使在受限沙箱里，`gh api` 也能用（而同场景下 `curl.exe` / `git push` 会失败 —— 原因见 `02-失败模式/受限沙箱下git推送失败.md`）。
+
+> **⚠️ 勘误（2026-10-08 实测，DSH `0.2.0-rc.2`）**：此处原写"不走 Windows 凭据存储"**不成立**。
+> `gh` 的 token **就是**存在凭据管理器里（`gh:<hostname>:<user>`，状态显示 `(keyring)`）。
+> 受限沙箱里真正会失败的环节是**写配置目录 `%APPDATA%\GitHub CLI\`**，不是凭据存储。
+> 后果很隐蔽：**授权已成功、token 已入库，但 `hosts.yml` 建不出来 → `gh auth status` 报"未登录"**。
+> 处置见 `02-失败模式/gh认证成功却报未登录.md`。
 
 ### ③ 补齐命令行工具链
 
