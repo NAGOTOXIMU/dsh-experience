@@ -19,7 +19,7 @@ GET /dsh-memory/content?target=rules
 → {name:"AGENTS.md", exists:false, text:"", path:"/.dsh/AGENTS.md"}
 ```
 
-而 `C:\Users\汐穆\.dsh\AGENTS.md` **实际有 13573 字节**。
+而 `C:\Users\<你>\.dsh\AGENTS.md` **实际有 13573 字节**。
 
 自定义的 `~/.dsh/memory/topics/*.md` 分片也不被收录。
 
@@ -55,7 +55,7 @@ GET http://127.0.0.1:<host端口>/dsh-memory/content?target=rules
 
 ```powershell
 # 只设当前用户，不碰系统级
-[Environment]::SetEnvironmentVariable('HOME', 'C:\Users\汐穆', 'User')
+[Environment]::SetEnvironmentVariable('HOME', 'C:\Users\<你>', 'User')
 # 验证已持久化
 (Get-ItemProperty 'HKCU:\Environment' -Name HOME).HOME
 ```
@@ -89,7 +89,7 @@ $env:HOME                                              # 当前进程是否继�
 
 # 2) 判别性探测（见上）
 # 3) 跑一键验证脚本
-& 'E:\Tools\verify-dsh-memory.ps1'
+& '<工具目录>\verify-dsh-memory.ps1'
 ```
 
 ## 反例 / 易混淆点

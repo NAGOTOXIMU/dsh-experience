@@ -16,7 +16,7 @@
 
 ```
 $ git -C E:\git push -u origin main
-fatal: unable to access 'https://github.com/NAGOTOXIMU/sandbox.git/':
+fatal: unable to access 'https://github.com/<你的账号>/sandbox.git/':
   schannel: AcquireCredentialsHandle failed: SEC_E_NO_CREDENTIALS (0x8009030e)
 ```
 
@@ -34,7 +34,7 @@ fatal: could not read Username for 'https://github.com': No such file or directo
 
 ```
 $ gh api user --jq .login
-NAGOTOXIMU                    # exit 0
+<你的账号>                    # exit 0
 ```
 
 ## 根因

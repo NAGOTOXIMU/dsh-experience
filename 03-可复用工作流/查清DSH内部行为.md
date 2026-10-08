@@ -21,8 +21,8 @@
 ## 打包资源在哪
 
 ```
-E:\deepseek-dsh\dshdesktop\resources\app.asar               ← 约 115–121 MB，实现主体
-E:\deepseek-dsh\dshdesktop\resources\app.asar.unpacked\     ← 少数未打包的依赖
+<DSH 目录>\dshdesktop\resources\app.asar               ← 约 115–121 MB，实现主体
+<DSH 目录>\dshdesktop\resources\app.asar.unpacked\     ← 少数未打包的依赖
 ```
 
 `app.asar` 是 Electron 的归档格式，**主体是 UTF-8 文本拼接**——
@@ -30,12 +30,12 @@ E:\deepseek-dsh\dshdesktop\resources\app.asar.unpacked\     ← 少数未打包�
 
 ## 怎么做（一条命令）
 
-用新增的常驻工具 `E:\Tools\asar-peek.py`：
+用新增的常驻工具 `<工具目录>\asar-peek.py`：
 
 ```powershell
-python E:\Tools\asar-peek.py <asar> -k "关键词" --before 300 --after 800 --limit 3
-python E:\Tools\asar-peek.py <asar> -k "关键词" --count-only      # 先确认存不存在
-python E:\Tools\asar-peek.py <asar> -k "关键词" --save out.txt    # 内容长就别刷屏
+python <工具目录>\asar-peek.py <asar> -k "关键词" --before 300 --after 800 --limit 3
+python <工具目录>\asar-peek.py <asar> -k "关键词" --count-only      # 先确认存不存在
+python <工具目录>\asar-peek.py <asar> -k "关键词" --save out.txt    # 内容长就别刷屏
 ```
 
 它会自动合并重叠命中、给出偏移量，并限制输出长度——比 `rg` 直接刷二进制有效得多。
@@ -68,8 +68,8 @@ candidates.push(join(systemRoot, "System32", "WindowsPowerShell", "v1.0", "power
 
 | 工具 | 用途 | 何时用 |
 |---|---|---|
-| `E:\Tools\asar-peek.py` | 在 asar 里找字符串 + 看上下文 | 想知道 DSH 内部逻辑/判据 |
-| `E:\Tools\xrun.py` | 结构化执行命令（argv 数组 → JSON） | 任何原本要走 shell 字符串的命令 |
+| `<工具目录>\asar-peek.py` | 在 asar 里找字符串 + 看上下文 | 想知道 DSH 内部逻辑/判据 |
+| `<工具目录>\xrun.py` | 结构化执行命令（argv 数组 → JSON） | 任何原本要走 shell 字符串的命令 |
 
 **先看这两个工具能不能用，再决定要不要现写脚本。**
 

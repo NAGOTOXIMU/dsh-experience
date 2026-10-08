@@ -119,6 +119,6 @@ Get-Process -Id <PID> | Select-Object Id, ProcessName, Path
 - **未验证** Electron 的 asar integrity fuse 在 Windows 下是否启用。若启用，改 `app.asar`
   会直接导致应用拒绝启动——因此没有实测任何共存改法
 - **未逐一确认**机器上所有社区客户端变体是否都已停用。本机除 `AppData\Local\Programs\DeepSeek Orb`
-  外还有一个独立安装 `E:\deepseek-dsh\apps\dsh-desktop`（旧的定制版），**未受影响、未卸载**
+  外还有一个独立安装 `<DSH 目录>\apps\dsh-desktop`（旧的定制版），**未受影响、未卸载**
 - 该结论基于对 `0.2.0-rc.2` / `0.1.7-rc.1` 两个具体构建的代码比对；
   上游若改了端口或 appId，此结论需要重新验证

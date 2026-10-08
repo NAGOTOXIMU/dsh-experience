@@ -14,17 +14,17 @@
 `pwsh` 里写工作区**之外**的路径**依然被拒**：
 
 ```
-E:\deepseek-dsh\...        OK        ← 工作区内
-E:\Tools\...               DENIED    UnauthorizedAccessException
+<DSH 目录>\...        OK        ← 工作区内
+<工具目录>\...               DENIED    UnauthorizedAccessException
 E:\DSH-Archive\...         DENIED
-C:\Users\<用户>\.dsh\...    DENIED
+C:\Users\<你>\.dsh\...    DENIED
 ```
 
 ## 根因：两条通道，限制来源不同
 
 | 通道 | 受什么限制 | 实测 |
 |---|---|---|
-| **文件工具**（`read` / `write` / `edit` / `glob` / `grep`） | 会话 **file policy** | 完全权限下能写 `~/.dsh`、`E:\Tools` ✅ |
+| **文件工具**（`read` / `write` / `edit` / `glob` / `grep`） | 会话 **file policy** | 完全权限下能写 `~/.dsh`、`<工具目录>` ✅ |
 | **`pwsh` 子进程**（跑命令、跑 git） | **会话工作区目录**（更严） | 完全权限下**仍然**只能写工作区 ❌ |
 
 ⇒ **"完全权限"解锁的是文件工具，不是 shell 的沙箱。**
@@ -32,7 +32,7 @@ C:\Users\<用户>\.dsh\...    DENIED
 ## 后果（真实的卡点）
 
 - **`git push` 推工作区外的仓库会失败**（要写该仓库的 `.git`）
-- 不能用 `pwsh` 改 `~/.dsh` 下的配置/记忆、`E:\Tools` 下的脚本
+- 不能用 `pwsh` 改 `~/.dsh` 下的配置/记忆、`<工具目录>` 下的脚本
 - **绕过办法**：这类改动改用**文件工具**（`edit` / `write`）做 —— 它们遵循 file policy
 
 ## 反证与边界（重要）
@@ -51,7 +51,7 @@ C:\Users\<用户>\.dsh\...    DENIED
 ## 复核方法
 
 ```powershell
-foreach ($p in 'E:\<工作区>\.t', 'E:\Tools\.t', "$env:USERPROFILE\.dsh\.t") {
+foreach ($p in 'E:\<工作区>\.t', '<工具目录>\.t', "$env:USERPROFILE\.dsh\.t") {
   try { Set-Content -LiteralPath $p -Value x -ErrorAction Stop; Remove-Item $p -Force; "$p  OK" }
   catch { "$p  DENIED" }
 }

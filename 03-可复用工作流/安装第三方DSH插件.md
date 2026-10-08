@@ -25,11 +25,11 @@
 
 ```powershell
 # 官方共享池（约 220 个包，很多能力其实已经有了）
-Get-ChildItem 'C:\Users\汐穆\.dsh\profiles\node_modules\@deepseek-ai' -Directory |
+Get-ChildItem 'C:\Users\<你>\.dsh\profiles\node_modules\@deepseek-ai' -Directory |
   Select-Object -ExpandProperty Name | Sort-Object
 
 # 常驻自建工具
-Get-ChildItem 'E:\Tools' -File
+Get-ChildItem '<工具目录>' -File
 ```
 
 **教训**：本项目里"自诊断 / 插件市场 / skill 管理"三个能力，官方共享池里**本来就有**，
@@ -45,8 +45,8 @@ $s.objects | ForEach-Object { "{0}  v{1}  {2}" -f $_.package.name,$_.package.ver
 
 ```powershell
 # GitHub 主题（注意：不要只按 star 排，该主题有 1.8 万个仓库，大量蹭标签的）
-# 本机已有工具：E:\Tools\gh-dsh-search.py（按 cordis.patch.yml / dsh 字段判真伪）
-python E:\Tools\gh-dsh-search.py --verify
+# 本机已有工具：<工具目录>\gh-dsh-search.py（按 cordis.patch.yml / dsh 字段判真伪）
+python <工具目录>\gh-dsh-search.py --verify
 ```
 
 **注意**：GitHub 的 `topic:dsh-plugin` 里混着简历站、低代码平台、图床等无关热门项目。
@@ -57,9 +57,9 @@ python E:\Tools\gh-dsh-search.py --verify
 
 ```powershell
 # 本机已有工具，可直接跑
-python E:\Tools\eval-memory-candidates.py   # 改里面的 CANDIDATES 列表即可复用
-python E:\Tools\check-peers.py              # peer 是否能被共享池满足
-python E:\Tools\probe-memory-import.py      # 隔离实测 import
+python <工具目录>\eval-memory-candidates.py   # 改里面的 CANDIDATES 列表即可复用
+python <工具目录>\check-peers.py              # peer 是否能被共享池满足
+python <工具目录>\probe-memory-import.py      # 隔离实测 import
 ```
 
 | 关 | 看什么 | 判定 |
@@ -92,10 +92,10 @@ console.log(Object.keys(m));   // 应包含 apply / inject / name
 ```powershell
 $sys=(Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings').ProxyServer
 $env:HTTP_PROXY="http://$sys"; $env:HTTPS_PROXY=$env:HTTP_PROXY; $env:NO_PROXY='localhost,127.0.0.1,::1'
-$node='C:\Users\汐穆\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\node\bin\node.exe'
-$pnpm='C:\Users\汐穆\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\pnpm\bin\pnpm.cjs'
+$node='C:\Users\<你>\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\node\bin\node.exe'
+$pnpm='C:\Users\<你>\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\pnpm\bin\pnpm.cjs'
 
-& $node $pnpm add --dir 'C:\Users\汐穆\.dsh\profiles\desktop' --ignore-scripts `
+& $node $pnpm add --dir 'C:\Users\<你>\.dsh\profiles\desktop' --ignore-scripts `
   --registry 'https://registry.npmjs.org/' `
   --config.auto-install-peers=false `
   --config.strict-peer-dependencies=false `
@@ -116,7 +116,7 @@ $pnpm='C:\Users\汐穆\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\pnpm\b
 包自带的 `cordis.patch.yml` 就是要抄的内容：
 
 ```powershell
-Get-Content 'C:\Users\汐穆\.dsh\profiles\desktop\node_modules\<包名>\cordis.patch.yml' -Raw
+Get-Content 'C:\Users\<你>\.dsh\profiles\desktop\node_modules\<包名>\cordis.patch.yml' -Raw
 ```
 
 把它里面的 `- insert:` 段落**追加**到
@@ -148,14 +148,14 @@ cordis_inspect_query platform=host provider=Service method=listService
 
 ```powershell
 # 卸载
-& $node $pnpm remove '<包名>' --dir 'C:\Users\汐穆\.dsh\profiles\desktop'
+& $node $pnpm remove '<包名>' --dir 'C:\Users\<你>\.dsh\profiles\desktop'
 # 再从 cordis.patch.yml 里删掉对应 insert 行
 ```
 
 **务必先备份** `cordis.patch.yml`：
 
 ```powershell
-Copy-Item 'C:\Users\汐穆\.dsh\profiles\desktop\cordis.patch.yml' `
+Copy-Item 'C:\Users\<你>\.dsh\profiles\desktop\cordis.patch.yml' `
           "E:\DSH-Archive\<任务名>-<日期>\备份\cordis.patch.yml.$(Get-Date -Format yyyyMMdd-HHmmss).bak"
 ```
 

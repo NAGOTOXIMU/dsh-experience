@@ -20,14 +20,14 @@
 
 | 人类做法 | agent 做法 | 落地物 |
 |---|---|---|
-| 开浏览器搜插件市场 | `gh` 搜 topic + npm registry API | `E:\Tools\gh-dsh-search.py` |
+| 开浏览器搜插件市场 | `gh` 搜 topic + npm registry API | `<工具目录>\gh-dsh-search.py` |
 | 网页上看仓库/Issue | `gh api` / `gh repo view` / `gh repo list` | gh CLI |
 | 用文件管理器翻目录 | `rg` / `fd` / `glob` / `grep` | 内置工具 + CLI |
 | 用编辑器改 JSON/YAML | `jq` / `yq` / Python `json` | 已装 |
 | 点开数据库客户端查表 | `sqlite3` | 已装 |
-| **手敲命令、肉眼读输出** | **argv 数组进 → JSON 出** | `E:\Tools\xrun.py` |
-| 用 `grep` 刷打包二进制（asar） | 专用 peek 工具，带上下文与偏移 | `E:\Tools\asar-peek.py` |
-| 手动解压/压缩包 | `7z` | `E:\Tools\7-Zip\7z.exe` |
+| **手敲命令、肉眼读输出** | **argv 数组进 → JSON 出** | `<工具目录>\xrun.py` |
+| 用 `grep` 刷打包二进制（asar） | 专用 peek 工具，带上下文与偏移 | `<工具目录>\asar-peek.py` |
+| 手动解压/压缩包 | `7z` | `<工具目录>\7-Zip\7z.exe` |
 
 ## 三条设计原则（做新工具时照这个来）
 
