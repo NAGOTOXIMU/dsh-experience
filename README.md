@@ -57,3 +57,20 @@ DSH（DeepSeek Harness）在 Windows 上的使用与调试经验集合。
 | 文件 | 主题 |
 |---|---|
 | [我的六类误判.md](04-自省/我的六类误判.md) | 排查过程中犯过的错误判断 |
+
+---
+
+## 许可
+
+本仓库内容采用 **CC BY-NC-SA 4.0**（署名 — 非商业性使用 — 相同方式共享 4.0 国际）许可。
+
+- 官方全文：[LICENSE](LICENSE)
+- 中文说明与免责：[LICENSE.md](LICENSE.md)
+
+**引用格式**：
+
+> 来源：DSH 调试经验库（<https://github.com/NAGOTOXIMU/dsh-experience>）
+> 许可：CC BY-NC-SA 4.0
+
+⚠️ 仓库内含涉及**注册表、权限（`icacls`）、完整性标签、卸载、删除**的操作说明，
+请先在**可回滚的环境**验证后再用于生产环境。

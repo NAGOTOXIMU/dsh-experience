@@ -1,0 +1,8 @@
+# 临时与编辑器产物
+*.tmp
+*.bak
+*.log
+*~
+Thumbs.db
+Desktop.ini
+.DS_Store
