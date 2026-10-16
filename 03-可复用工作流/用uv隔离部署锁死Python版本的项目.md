@@ -10,11 +10,17 @@
 
 ## 症状
 
-第三方项目的 `setup.bat` 宣告「未找到 Python 3.12，正在尝试自动安装」，
-接着 `winget install Python.Python.3.12 --scope user --silent`，
-winget 失败还会去 python.org 拉安装器静默装（`PrependPath=1` → **会改用户 PATH**）。
+第三方项目的 `setup.bat` 里通常埋着两条路：
 
-此时本机可能只有 Python 3.14，用户并不想为这个项目动系统环境。
+- 找不到指定版本 → **自动安装**（`winget install ... --silent`，失败再去 python.org
+  拉安装器静默装，`PrependPath=1` → **会改用户 PATH**）；
+- 以为找到 → 直接拿它去 `-m venv`。
+
+本机可能只有 Python 3.14，用户并不想为这个项目动系统环境。
+
+**别只看代码就断言它一定会走自动安装那条路**（我第一版就是这么写错的）：
+这类「版本探测」经常坏掉，真实走向要用探针验。本例实测结果是**假阳性**——
+既不装 3.12，也建不出 venv，直接在中间失败（见下面的「坑」一节）。
 
 ---
 
@@ -98,6 +104,21 @@ uv pip install --python .venv\Scripts\python.exe -r requirements.windows.txt
 
 ## 坑与注意
 
+- **`py -3.12` 的报错走 stdout，会让「版本探测」假阳性**（本例实测，最容易漏的一环）：
+  `py` launcher 找不到指定版本时，把 `Python 3.12 not found!` 和已装版本列表
+  （如 ` -3.14-64`）打到 **stdout**（不是 stderr）。而脚本里的写法是
+
+  ```bat
+  for /f "delims=" %%I in ('py -3.12 -c "import sys; print(sys.executable)" 2^>nul') do set "PYTHON_EXE=%%I"
+  ```
+
+  只丢 stderr → 报错文本被当成解释器路径赋值（`PYTHON_EXE= -3.14-64`，非空）
+  → `if defined PYTHON_EXE` 判真 → **跳过自动安装**，接着拿这个假路径去
+  `-m venv` 而整条流程失败。**结果是它既不装 3.12，也建不出环境。**
+  现场证据：本机「系统里根本没有 3.12」，`setup.bat --check` 却返回 `CHECK_OK`。
+  判别法：自己把这段探测逻辑抄成探针跑一遍；`where py` 成功且无 3.12 → 假阳性；
+  `where py` 失败（PATH 里没有 py.exe）才轮到 `python -c` 分支 → 未定义 → 真会去装。
+  **所以「它会自动装 Python」这句话必须加环境限定，不能一概而论。**
 - **单实例端口**：本项目用 bind `127.0.0.1:47653` 做单实例锁。
   你自己起的验证实例会占住它，导致用户之后启动主程序被判「已经有一个在运行」。
   验证完先停掉自己的实例（`job_kill`），再交付。
